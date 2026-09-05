@@ -1,0 +1,22 @@
+[project]
+name = "deep-agents-on-foundry"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "azure-ai-projects>=2.6.0",
+    "azure-identity>=1.25.3",
+    "deepagents>=0.7.11",
+    "langchain-azure-ai>=1.2.9",
+    "python-dotenv>=1.2.3",
+]
+
+[[tool.uv.index]]
+url = "https://packagefeedproxy.microsoft.io/pypi/simple"
+default = true
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.3.0",
+]
