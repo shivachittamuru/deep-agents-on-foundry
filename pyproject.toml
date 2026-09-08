@@ -1,7 +1,7 @@
 [project]
 name = "deep-agents-on-foundry"
 version = "0.1.0"
-description = "Add your description here"
+description = "Research Deep Agent on Microsoft Foundry"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -14,6 +14,13 @@ dependencies = [
     "python-dotenv>=1.2.3",
 ]
 
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/deep_agents_foundry"]
+
 [[tool.uv.index]]
 url = "https://packagefeedproxy.microsoft.io/pypi/simple"
 default = true
@@ -21,4 +28,8 @@ default = true
 [dependency-groups]
 dev = [
     "ipykernel>=7.3.0",
+    "pytest>=8.0.0",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
