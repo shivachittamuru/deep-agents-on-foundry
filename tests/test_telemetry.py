@@ -13,6 +13,7 @@ from deep_agents_foundry.config import (
     TracingSettings,
     load_tracing_settings,
 )
+from deep_agents_foundry.errors import ConfigurationError
 
 
 def test_build_azure_tracer_passes_expected_arguments(monkeypatch):
@@ -61,7 +62,7 @@ def test_build_azure_tracer_omits_agent_id_when_none(monkeypatch):
 def test_load_tracing_settings_missing_connection_string_raises(monkeypatch):
     monkeypatch.delenv(APP_INSIGHTS_CONNECTION_STRING_ENV, raising=False)
 
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(ConfigurationError) as excinfo:
         load_tracing_settings(use_dotenv=False)
 
     assert APP_INSIGHTS_CONNECTION_STRING_ENV in str(excinfo.value)
@@ -100,7 +101,7 @@ def test_content_recording_invalid_value_raises(monkeypatch):
     monkeypatch.setenv(APP_INSIGHTS_CONNECTION_STRING_ENV, "InstrumentationKey=abc")
     monkeypatch.setenv(ENABLE_TRACE_CONTENT_RECORDING_ENV, "maybe")
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ConfigurationError):
         load_tracing_settings(use_dotenv=False)
 
 

@@ -4,6 +4,9 @@ from __future__ import annotations
 
 from deep_agents_foundry import model as model_module
 from deep_agents_foundry.config import Settings
+from deep_agents_foundry.errors import ModelInitializationError
+
+import pytest
 
 
 def test_build_model_passes_expected_arguments(monkeypatch):
@@ -59,3 +62,25 @@ def test_build_model_loads_settings_when_not_provided(monkeypatch):
 
     assert captured["project_endpoint"] == "https://loaded"
     assert captured["model"] == "loaded-deployment"
+
+
+def test_build_model_wraps_constructor_failure(monkeypatch):
+    original = RuntimeError("boom")
+
+    def failing_constructor(**kwargs):
+        raise original
+
+    monkeypatch.setattr(model_module, "DefaultAzureCredential", lambda: object())
+    monkeypatch.setattr(
+        model_module, "AzureAIOpenAIApiChatModel", failing_constructor
+    )
+
+    settings = Settings(
+        project_endpoint="https://example",
+        model_deployment="gpt-test",
+    )
+
+    with pytest.raises(ModelInitializationError) as excinfo:
+        model_module.build_model(settings)
+
+    assert excinfo.value.__cause__ is original

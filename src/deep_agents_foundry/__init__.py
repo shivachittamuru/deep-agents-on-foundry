@@ -4,6 +4,13 @@ from __future__ import annotations
 
 from .agent import RESEARCH_INSTRUCTIONS, build_research_agent
 from .config import Settings, TracingSettings, load_settings, load_tracing_settings
+from .errors import (
+    AgentInitializationError,
+    ConfigurationError,
+    DeepAgentsFoundryError,
+    ModelInitializationError,
+    ToolInitializationError,
+)
 from .evaluation import (
     RESEARCH_RUBRIC,
     aggregate_usage,
@@ -44,4 +51,9 @@ __all__ = [
     "build_rubric_prompt",
     "parse_judge_json",
     "evaluate_with_rubric",
+    "DeepAgentsFoundryError",
+    "ConfigurationError",
+    "ModelInitializationError",
+    "ToolInitializationError",
+    "AgentInitializationError",
 ]

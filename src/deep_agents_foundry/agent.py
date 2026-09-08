@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from deepagents import create_deep_agent
 
+from .errors import AgentInitializationError
 from .model import build_model
 from .tools import build_web_search_tool
 
@@ -31,8 +32,13 @@ def build_research_agent():
     model = build_model()
     tools = [build_web_search_tool()]
 
-    return create_deep_agent(
-        model=model,
-        tools=tools,
-        system_prompt=RESEARCH_INSTRUCTIONS,
-    )
+    try:
+        return create_deep_agent(
+            model=model,
+            tools=tools,
+            system_prompt=RESEARCH_INSTRUCTIONS,
+        )
+    except Exception as exc:
+        raise AgentInitializationError(
+            "Failed to construct the research Deep Agent."
+        ) from exc

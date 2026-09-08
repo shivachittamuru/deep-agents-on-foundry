@@ -10,6 +10,7 @@ from deep_agents_foundry.config import (
     Settings,
     load_settings,
 )
+from deep_agents_foundry.errors import ConfigurationError
 
 
 def test_load_settings_reads_environment(monkeypatch):
@@ -38,7 +39,7 @@ def test_load_settings_missing_raises(monkeypatch):
     monkeypatch.delenv(PROJECT_ENDPOINT_ENV, raising=False)
     monkeypatch.delenv(MODEL_DEPLOYMENT_ENV, raising=False)
 
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(ConfigurationError) as excinfo:
         load_settings(use_dotenv=False)
 
     message = str(excinfo.value)
@@ -50,7 +51,7 @@ def test_load_settings_partial_missing_names_only_missing(monkeypatch):
     monkeypatch.setenv(PROJECT_ENDPOINT_ENV, "https://example")
     monkeypatch.delenv(MODEL_DEPLOYMENT_ENV, raising=False)
 
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(ConfigurationError) as excinfo:
         load_settings(use_dotenv=False)
 
     message = str(excinfo.value)

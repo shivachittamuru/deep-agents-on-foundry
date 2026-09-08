@@ -7,6 +7,8 @@ from dataclasses import dataclass
 
 from dotenv import load_dotenv
 
+from .errors import ConfigurationError
+
 PROJECT_ENDPOINT_ENV = "AZURE_AI_PROJECT_ENDPOINT"
 MODEL_DEPLOYMENT_ENV = "AZURE_AI_MODEL_DEPLOYMENT_NAME"
 APP_INSIGHTS_CONNECTION_STRING_ENV = "APPLICATIONINSIGHTS_CONNECTION_STRING"
@@ -53,7 +55,7 @@ def load_settings(*, use_dotenv: bool = True) -> Settings:
         if not value
     ]
     if missing:
-        raise ValueError(
+        raise ConfigurationError(
             "Missing required environment variables: " + ", ".join(missing)
         )
 
@@ -72,7 +74,7 @@ def _parse_bool(value: str, *, default: bool = False) -> bool:
         return True
     if normalized in _FALSE_VALUES:
         return False
-    raise ValueError(
+    raise ConfigurationError(
         f"Cannot parse boolean from {ENABLE_TRACE_CONTENT_RECORDING_ENV}={value!r}. "
         f"Use one of: {sorted(_TRUE_VALUES | _FALSE_VALUES)}."
     )
@@ -92,7 +94,7 @@ def load_tracing_settings(*, use_dotenv: bool = True) -> TracingSettings:
         APP_INSIGHTS_CONNECTION_STRING_ENV, ""
     ).strip()
     if not connection_string:
-        raise ValueError(
+        raise ConfigurationError(
             "Missing required environment variable: "
             f"{APP_INSIGHTS_CONNECTION_STRING_ENV}"
         )
