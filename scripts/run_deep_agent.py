@@ -19,4 +19,4 @@ and then produce a concise architecture summary with citations.
 print(result["messages"][-1].content)
 
 
-# uv run python scripts/test.py
+# uv run python scripts/run_deep_agent.py
