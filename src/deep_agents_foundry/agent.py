@@ -27,17 +27,25 @@ filesystem-based context management, and subagent delegation.
 """
 
 
-def build_research_agent():
-    """Build the research Deep Agent: Foundry model + web search + instructions."""
+def build_research_agent(*, checkpointer=None):
+    """Build the research Deep Agent: Foundry model + web search + instructions.
+
+    Stateless by default. Pass an injected `checkpointer` (see `persistence.py`)
+    to enable LangGraph thread persistence.
+    """
     model = build_model()
     tools = [build_web_search_tool()]
 
+    kwargs = {
+        "model": model,
+        "tools": tools,
+        "system_prompt": RESEARCH_INSTRUCTIONS,
+    }
+    if checkpointer is not None:
+        kwargs["checkpointer"] = checkpointer
+
     try:
-        return create_deep_agent(
-            model=model,
-            tools=tools,
-            system_prompt=RESEARCH_INSTRUCTIONS,
-        )
+        return create_deep_agent(**kwargs)
     except Exception as exc:
         raise AgentInitializationError(
             "Failed to construct the research Deep Agent."
