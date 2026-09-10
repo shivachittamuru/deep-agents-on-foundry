@@ -840,6 +840,7 @@ name = "deep-agents-on-foundry"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "aiosqlite" },
     { name = "azure-ai-agentserver-responses" },
     { name = "azure-ai-evaluation" },
     { name = "azure-ai-projects" },
@@ -859,6 +860,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "aiosqlite", specifier = ">=0.20.0" },
     { name = "azure-ai-agentserver-responses", specifier = ">=2.1.0" },
     { name = "azure-ai-evaluation", specifier = ">=1.18.5" },
     { name = "azure-ai-projects", specifier = ">=2.6.0" },

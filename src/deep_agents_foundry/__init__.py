@@ -24,8 +24,12 @@ from .evaluation import (
     trajectory_summary,
 )
 from .model import build_model
-from .persistence import build_sqlite_checkpointer, thread_config
-from .streaming import stream_research_text
+from .persistence import (
+    build_async_sqlite_checkpointer,
+    build_sqlite_checkpointer,
+    thread_config,
+)
+from .streaming import astream_research_text, stream_research_text
 from .telemetry import (
     attach_tracing,
     build_azure_tracer,
@@ -42,7 +46,9 @@ __all__ = [
     "build_web_search_tool",
     "content_text",
     "stream_research_text",
+    "astream_research_text",
     "build_sqlite_checkpointer",
+    "build_async_sqlite_checkpointer",
     "thread_config",
     "TracingSettings",
     "load_tracing_settings",

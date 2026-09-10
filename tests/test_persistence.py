@@ -2,14 +2,17 @@
 
 from __future__ import annotations
 
+import asyncio
 from typing import TypedDict
 
 import pytest
 from langgraph.checkpoint.sqlite import SqliteSaver
+from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
 from langgraph.graph import END, START, StateGraph
 
 from deep_agents_foundry.errors import ConfigurationError
 from deep_agents_foundry.persistence import (
+    build_async_sqlite_checkpointer,
     build_sqlite_checkpointer,
     thread_config,
 )
@@ -70,3 +73,33 @@ def test_state_persists_and_threads_are_isolated(tmp_path):
     assert graph.get_state(thread_a).values["value"] == 1
     # A different thread_id remains isolated.
     assert graph.get_state(thread_b).values["value"] == 101
+
+
+def test_build_async_sqlite_checkpointer_returns_async_saver(tmp_path):
+    async def run():
+        return build_async_sqlite_checkpointer(tmp_path / "async.db")
+
+    checkpointer = asyncio.run(run())
+
+    assert isinstance(checkpointer, AsyncSqliteSaver)
+
+
+def test_async_state_persists_and_threads_are_isolated(tmp_path):
+    async def run():
+        checkpointer = build_async_sqlite_checkpointer(tmp_path / "async.db")
+        graph = _counter_graph(checkpointer)
+        thread_a = thread_config("thread-a")
+        thread_b = thread_config("thread-b")
+
+        await graph.ainvoke({"value": 0}, config=thread_a)
+        await graph.ainvoke({"value": 100}, config=thread_b)
+
+        state_a = await graph.aget_state(thread_a)
+        state_b = await graph.aget_state(thread_b)
+        await checkpointer.conn.close()
+        return state_a.values["value"], state_b.values["value"]
+
+    value_a, value_b = asyncio.run(run())
+
+    assert value_a == 1
+    assert value_b == 101

@@ -6,7 +6,7 @@ function that yields plain-text deltas.
 
 from __future__ import annotations
 
-from collections.abc import Iterator
+from collections.abc import AsyncIterator, Iterator
 
 from .content import content_text
 
@@ -32,6 +32,29 @@ def stream_research_text(agent, user_input: str, *, config=None) -> Iterator[str
     Only text is emitted; agent-step updates and non-text blocks are skipped.
     """
     for part in agent.stream(
+        {"messages": [{"role": "user", "content": user_input}]},
+        config=config,
+        stream_mode="messages",
+        version="v2",
+    ):
+        chunk = _message_chunk(part)
+        if chunk is None:
+            continue
+
+        text = content_text(chunk)
+        if text:
+            yield text
+
+
+async def astream_research_text(
+    agent, user_input: str, *, config=None
+) -> AsyncIterator[str]:
+    """Async counterpart of `stream_research_text` using `agent.astream(...)`.
+
+    Only user-visible text deltas are emitted; agent-step updates and non-text
+    blocks are skipped.
+    """
+    async for part in agent.astream(
         {"messages": [{"role": "user", "content": user_input}]},
         config=config,
         stream_mode="messages",

@@ -43,6 +43,7 @@ def test_build_research_agent_omits_checkpointer_by_default(monkeypatch):
     agent_module.build_research_agent()
 
     assert "checkpointer" not in captured
+    assert "interrupt_on" not in captured
 
 
 def test_build_research_agent_forwards_checkpointer(monkeypatch):
@@ -60,6 +61,23 @@ def test_build_research_agent_forwards_checkpointer(monkeypatch):
     agent_module.build_research_agent(checkpointer=sentinel_checkpointer)
 
     assert captured["checkpointer"] is sentinel_checkpointer
+
+
+def test_build_research_agent_forwards_interrupt_on(monkeypatch):
+    captured = {}
+    interrupt_config = {"web_search": True}
+
+    monkeypatch.setattr(agent_module, "build_model", lambda: object())
+    monkeypatch.setattr(agent_module, "build_web_search_tool", lambda: object())
+    monkeypatch.setattr(
+        agent_module,
+        "create_deep_agent",
+        lambda **kwargs: captured.update(kwargs) or object(),
+    )
+
+    agent_module.build_research_agent(interrupt_on=interrupt_config)
+
+    assert captured["interrupt_on"] is interrupt_config
 
 
 def test_research_instructions_capture_notebook_behavior():

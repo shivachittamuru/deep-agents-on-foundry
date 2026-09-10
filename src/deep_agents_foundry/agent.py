@@ -27,11 +27,20 @@ filesystem-based context management, and subagent delegation.
 """
 
 
-def build_research_agent(*, checkpointer=None):
+def build_research_agent(*, checkpointer=None, interrupt_on=None):
     """Build the research Deep Agent: Foundry model + web search + instructions.
 
-    Stateless by default. Pass an injected `checkpointer` (see `persistence.py`)
-    to enable LangGraph thread persistence.
+    Architecture for open-ended research:
+    - Deep Agents owns dynamic reasoning/orchestration (the primary agent layer).
+    - the LangGraph checkpointer owns durable thread state (see `persistence.py`).
+    - native Deep Agents HITL (`interrupt_on`) handles tool/action approval.
+
+    Use an outer LangGraph workflow only for a truly fixed business process, not
+    for general research. Stateless and non-interrupting by default.
+
+    `interrupt_on` maps tool names to the native Deep Agents HITL config
+    (`bool` or `InterruptOnConfig`); it requires a `checkpointer` at runtime to
+    persist the paused state.
     """
     model = build_model()
     tools = [build_web_search_tool()]
@@ -43,6 +52,8 @@ def build_research_agent(*, checkpointer=None):
     }
     if checkpointer is not None:
         kwargs["checkpointer"] = checkpointer
+    if interrupt_on is not None:
+        kwargs["interrupt_on"] = interrupt_on
 
     try:
         return create_deep_agent(**kwargs)

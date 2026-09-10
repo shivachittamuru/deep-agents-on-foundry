@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+import asyncio
 from types import SimpleNamespace
 
-from deep_agents_foundry.streaming import stream_research_text
+from deep_agents_foundry.streaming import astream_research_text, stream_research_text
 
 
 def chunk(blocks):
@@ -85,3 +86,67 @@ def test_stream_research_text_skips_empty_text():
     )
 
     assert list(stream_research_text(agent, "q")) == ["only"]
+
+
+class AsyncFakeAgent:
+    def __init__(self, parts):
+        self._parts = parts
+        self.calls = []
+
+    async def astream(self, payload, config=None, *, stream_mode=None, version=None):
+        self.calls.append(
+            {
+                "payload": payload,
+                "config": config,
+                "stream_mode": stream_mode,
+                "version": version,
+            }
+        )
+        for part in self._parts:
+            yield part
+
+
+async def _collect(async_iter):
+    return [item async for item in async_iter]
+
+
+def test_astream_research_text_yields_text_in_order():
+    agent = AsyncFakeAgent(
+        [
+            {"type": "messages", "data": (chunk([text_block("Hello ")]), {})},
+            {"type": "messages", "data": (chunk([text_block("world")]), {})},
+        ]
+    )
+
+    deltas = asyncio.run(_collect(astream_research_text(agent, "q")))
+
+    assert deltas == ["Hello ", "world"]
+
+
+def test_astream_research_text_ignores_non_text_and_empty_blocks():
+    agent = AsyncFakeAgent(
+        [
+            {"type": "messages", "data": (chunk([{"type": "tool_call"}]), {})},
+            {"type": "messages", "data": (chunk([]), {})},
+            {"type": "messages", "data": (chunk([text_block("kept")]), {})},
+        ]
+    )
+
+    deltas = asyncio.run(_collect(astream_research_text(agent, "q")))
+
+    assert deltas == ["kept"]
+
+
+def test_astream_research_text_uses_expected_arguments_and_forwards_config():
+    agent = AsyncFakeAgent([])
+    config = {"configurable": {"thread_id": "t-1"}}
+
+    asyncio.run(_collect(astream_research_text(agent, "explain X", config=config)))
+
+    call = agent.calls[0]
+    assert call["payload"] == {
+        "messages": [{"role": "user", "content": "explain X"}]
+    }
+    assert call["stream_mode"] == "messages"
+    assert call["version"] == "v2"
+    assert call["config"] == config
