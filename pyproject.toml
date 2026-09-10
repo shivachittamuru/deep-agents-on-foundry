@@ -11,6 +11,7 @@ dependencies = [
     "azure-identity>=1.25.3",
     "deepagents>=0.7.11",
     "langchain-azure-ai[opentelemetry]>=1.2.9",
+    "langgraph-checkpoint-sqlite>=3.1.1",
     "matplotlib>=3.11.1",
     "python-dotenv>=1.2.3",
 ]
