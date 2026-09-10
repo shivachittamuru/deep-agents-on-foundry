@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from .agent import RESEARCH_INSTRUCTIONS, build_research_agent
 from .config import Settings, TracingSettings, load_settings, load_tracing_settings
+from .content import content_text
 from .errors import (
     AgentInitializationError,
     ConfigurationError,
@@ -23,6 +24,7 @@ from .evaluation import (
     trajectory_summary,
 )
 from .model import build_model
+from .streaming import stream_research_text
 from .telemetry import (
     attach_tracing,
     build_azure_tracer,
@@ -37,6 +39,8 @@ __all__ = [
     "load_settings",
     "build_model",
     "build_web_search_tool",
+    "content_text",
+    "stream_research_text",
     "TracingSettings",
     "load_tracing_settings",
     "build_azure_tracer",

@@ -13,3 +13,6 @@ wheels/
 .venv
 
 .azure
+
+# Checkpointer SQLite database
+data/
