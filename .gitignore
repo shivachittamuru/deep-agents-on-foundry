@@ -14,5 +14,7 @@ wheels/
 
 .azure
 
-# Checkpointer SQLite database
-data/
+# SQLite runtime databases
+data/*.db
+data/*.db-shm
+data/*.db-wal

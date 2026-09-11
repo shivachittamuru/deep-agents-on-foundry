@@ -1,0 +1,11 @@
+# Architecture Checklist
+- Major components
+- Orchestration owner
+- State ownership
+- Persistence boundary
+- Session vs application state
+- AuthN/AuthZ
+- Client vs server execution
+- Scaling unit
+- Failure boundaries
+- Observability/evaluation
