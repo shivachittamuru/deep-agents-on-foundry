@@ -7,6 +7,7 @@ from deepagents import create_deep_agent
 from .errors import AgentInitializationError
 from .memory import MEMORY_POLICY, MEMORY_TOOLS, ResearchContext
 from .model import build_model
+from .skills import build_skills_backend
 from .tools import build_web_search_tool
 
 RESEARCH_INSTRUCTIONS = """
@@ -28,7 +29,9 @@ filesystem-based context management, and subagent delegation.
 """
 
 
-def build_research_agent(*, checkpointer=None, interrupt_on=None, store=None):
+def build_research_agent(
+    *, checkpointer=None, interrupt_on=None, store=None, skills=None
+):
     """Build the research Deep Agent: Foundry model + web search + instructions.
 
     Architecture for open-ended research:
@@ -38,9 +41,13 @@ def build_research_agent(*, checkpointer=None, interrupt_on=None, store=None):
     - an injected `store` enables cross-thread, user-scoped long-term memory
       (see `memory.py`); `user_id` comes from a trusted `ResearchContext` passed
       at invoke time, never from the LLM.
+    - `skills` (source paths, e.g. `["."]`) enables progressive-disclosure
+      procedural knowledge loaded from disk (see `skills.py`); the skills
+      middleware injects its own routing prompt, so the base prompt is unchanged.
 
     Use an outer LangGraph workflow only for a truly fixed business process, not
-    for general research. Stateless, non-interrupting, and memoryless by default.
+    for general research. Stateless, non-interrupting, memoryless, and
+    skill-less by default.
 
     `interrupt_on` maps tool names to the native Deep Agents HITL config
     (`bool` or `InterruptOnConfig`); it requires a `checkpointer` at runtime to
@@ -66,6 +73,9 @@ def build_research_agent(*, checkpointer=None, interrupt_on=None, store=None):
     if store is not None:
         kwargs["store"] = store
         kwargs["context_schema"] = ResearchContext
+    if skills is not None:
+        kwargs["skills"] = skills
+        kwargs["backend"] = build_skills_backend()
 
     try:
         return create_deep_agent(**kwargs)

@@ -35,6 +35,11 @@ from .persistence import (
     build_sqlite_checkpointer,
     thread_config,
 )
+from .skills import (
+    SKILLS_DIR,
+    build_skills_backend,
+    list_available_skills,
+)
 from .streaming import astream_research_text, stream_research_text
 from .telemetry import (
     attach_tracing,
@@ -60,6 +65,9 @@ __all__ = [
     "preferences_namespace",
     "remember_research_preference",
     "recall_research_preferences",
+    "SKILLS_DIR",
+    "build_skills_backend",
+    "list_available_skills",
     "TracingSettings",
     "load_tracing_settings",
     "build_azure_tracer",
