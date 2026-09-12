@@ -48,15 +48,24 @@ def preferences_namespace(user_id: str) -> tuple[str, str, str]:
     return ("users", user_id, _PREFERENCES_CATEGORY)
 
 
-def _user_id_from_runtime(runtime: ToolRuntime) -> str:
-    """Read the trusted user_id from runtime context (never from the LLM)."""
+def _optional_user_id(runtime: ToolRuntime) -> str | None:
+    """Read the trusted user_id from runtime context, or None if absent.
+
+    Returns None (rather than raising) when no user identity was provided, so the
+    memory tools can degrade gracefully instead of crashing a hosted run.
+    """
     context = getattr(runtime, "context", None)
     user_id = getattr(context, "user_id", None)
-    if not isinstance(user_id, str) or not user_id.strip():
-        raise ConfigurationError(
-            "Memory tools require a ResearchContext with a non-empty user_id."
-        )
-    return user_id
+    if isinstance(user_id, str) and user_id.strip():
+        return user_id
+    return None
+
+
+# Returned by the memory tools when a request carries no user identity.
+_MEMORY_UNAVAILABLE_MESSAGE = (
+    "Long-term memory is unavailable for this request because no user identity "
+    "was provided. Proceeding without stored preferences."
+)
 
 
 MEMORY_POLICY = """
@@ -75,8 +84,12 @@ Do NOT store: current web facts, news, prices, rankings, current product/API or
 model capabilities, transient findings, arbitrary tool output, ordinary
 conversation details, or preferences inferred from a single one-off request.
 
-You may call `recall_research_preferences` at the start of a task to apply the
-user's durable preferences.
+ALWAYS call `recall_research_preferences` FIRST — before you answer — whenever the
+user asks what you remember or know about them, references their saved
+preferences, or when durable preferences could shape the response. These
+preferences persist across conversations, so never answer such questions from the
+current conversation alone. If a tool reports that memory is unavailable, continue
+normally without stored preferences.
 """
 
 
@@ -87,21 +100,26 @@ def remember_research_preference(preference: str, runtime: ToolRuntime) -> str:
     Use only for durable preferences the user explicitly wants remembered (e.g.
     citation style, depth, output format) — never transient facts or findings.
     """
-    user_id = _user_id_from_runtime(runtime)
-    namespace = preferences_namespace(user_id)
-    runtime.store.put(namespace, uuid4().hex, {"preference": preference})
+    user_id = _optional_user_id(runtime)
+    if user_id is None:
+        return _MEMORY_UNAVAILABLE_MESSAGE
+
+    runtime.store.put(
+        preferences_namespace(user_id), uuid4().hex, {"preference": preference}
+    )
     return f"Saved research preference: {preference}"
 
 
 @tool
 def recall_research_preferences(runtime: ToolRuntime) -> str:
     """Return the current user's saved durable research preferences."""
-    user_id = _user_id_from_runtime(runtime)
-    namespace = preferences_namespace(user_id)
+    user_id = _optional_user_id(runtime)
+    if user_id is None:
+        return _MEMORY_UNAVAILABLE_MESSAGE
 
     preferences = [
         item.value.get("preference", "")
-        for item in runtime.store.search(namespace)
+        for item in runtime.store.search(preferences_namespace(user_id))
     ]
     if not preferences:
         return "No saved research preferences."

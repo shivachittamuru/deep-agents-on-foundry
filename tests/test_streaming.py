@@ -93,11 +93,12 @@ class AsyncFakeAgent:
         self._parts = parts
         self.calls = []
 
-    async def astream(self, payload, config=None, *, stream_mode=None, version=None):
+    async def astream(self, payload, config=None, *, context=None, stream_mode=None, version=None):
         self.calls.append(
             {
                 "payload": payload,
                 "config": config,
+                "context": context,
                 "stream_mode": stream_mode,
                 "version": version,
             }

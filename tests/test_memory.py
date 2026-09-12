@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from types import SimpleNamespace
+
 import pytest
 from langchain_core.language_models.fake_chat_models import GenericFakeChatModel
 from langchain_core.messages import AIMessage, ToolMessage
@@ -115,6 +117,22 @@ def test_remember_tool_does_not_expose_user_id_to_llm():
     assert "preference" in remember_research_preference.args
     assert "user_id" not in remember_research_preference.args
     assert "user_id" not in recall_research_preferences.args
+
+
+def test_memory_tools_degrade_gracefully_without_user_context():
+    # No user identity (e.g. a hosted request without metadata.user_id): the
+    # tools must return a message, not raise and crash the run.
+    runtime = SimpleNamespace(context=None, store=InMemoryStore())
+
+    remembered = remember_research_preference.func(
+        preference="cite primary sources", runtime=runtime
+    )
+    recalled = recall_research_preferences.func(runtime=runtime)
+
+    assert "unavailable" in remembered.lower()
+    assert "unavailable" in recalled.lower()
+    # Nothing was written without a user identity.
+    assert runtime.store.search(("users", "user-a", "research_preferences")) == []
 
 
 # --- 3 & 4. Explicit write goes only to the user's namespace ----------------

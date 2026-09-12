@@ -47,16 +47,18 @@ def stream_research_text(agent, user_input: str, *, config=None) -> Iterator[str
 
 
 async def astream_research_text(
-    agent, user_input: str, *, config=None
+    agent, user_input: str, *, config=None, context=None
 ) -> AsyncIterator[str]:
     """Async counterpart of `stream_research_text` using `agent.astream(...)`.
 
-    Only user-visible text deltas are emitted; agent-step updates and non-text
-    blocks are skipped.
+    `context` carries the trusted runtime context (e.g. `ResearchContext` for
+    long-term memory). Only user-visible text deltas are emitted; agent-step
+    updates and non-text blocks are skipped.
     """
     async for part in agent.astream(
         {"messages": [{"role": "user", "content": user_input}]},
         config=config,
+        context=context,
         stream_mode="messages",
         version="v2",
     ):
