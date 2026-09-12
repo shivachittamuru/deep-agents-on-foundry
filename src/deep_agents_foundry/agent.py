@@ -5,6 +5,7 @@ from __future__ import annotations
 from deepagents import create_deep_agent
 
 from .errors import AgentInitializationError
+from .memory import MEMORY_POLICY, MEMORY_TOOLS, ResearchContext
 from .model import build_model
 from .tools import build_web_search_tool
 
@@ -27,16 +28,19 @@ filesystem-based context management, and subagent delegation.
 """
 
 
-def build_research_agent(*, checkpointer=None, interrupt_on=None):
+def build_research_agent(*, checkpointer=None, interrupt_on=None, store=None):
     """Build the research Deep Agent: Foundry model + web search + instructions.
 
     Architecture for open-ended research:
     - Deep Agents owns dynamic reasoning/orchestration (the primary agent layer).
     - the LangGraph checkpointer owns durable thread state (see `persistence.py`).
     - native Deep Agents HITL (`interrupt_on`) handles tool/action approval.
+    - an injected `store` enables cross-thread, user-scoped long-term memory
+      (see `memory.py`); `user_id` comes from a trusted `ResearchContext` passed
+      at invoke time, never from the LLM.
 
     Use an outer LangGraph workflow only for a truly fixed business process, not
-    for general research. Stateless and non-interrupting by default.
+    for general research. Stateless, non-interrupting, and memoryless by default.
 
     `interrupt_on` maps tool names to the native Deep Agents HITL config
     (`bool` or `InterruptOnConfig`); it requires a `checkpointer` at runtime to
@@ -44,16 +48,24 @@ def build_research_agent(*, checkpointer=None, interrupt_on=None):
     """
     model = build_model()
     tools = [build_web_search_tool()]
+    system_prompt = RESEARCH_INSTRUCTIONS
+
+    if store is not None:
+        tools = tools + MEMORY_TOOLS
+        system_prompt = RESEARCH_INSTRUCTIONS + MEMORY_POLICY
 
     kwargs = {
         "model": model,
         "tools": tools,
-        "system_prompt": RESEARCH_INSTRUCTIONS,
+        "system_prompt": system_prompt,
     }
     if checkpointer is not None:
         kwargs["checkpointer"] = checkpointer
     if interrupt_on is not None:
         kwargs["interrupt_on"] = interrupt_on
+    if store is not None:
+        kwargs["store"] = store
+        kwargs["context_schema"] = ResearchContext
 
     try:
         return create_deep_agent(**kwargs)

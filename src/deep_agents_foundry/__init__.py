@@ -24,6 +24,12 @@ from .evaluation import (
     trajectory_summary,
 )
 from .model import build_model
+from .memory import (
+    ResearchContext,
+    preferences_namespace,
+    recall_research_preferences,
+    remember_research_preference,
+)
 from .persistence import (
     build_async_sqlite_checkpointer,
     build_sqlite_checkpointer,
@@ -50,6 +56,10 @@ __all__ = [
     "build_sqlite_checkpointer",
     "build_async_sqlite_checkpointer",
     "thread_config",
+    "ResearchContext",
+    "preferences_namespace",
+    "remember_research_preference",
+    "recall_research_preferences",
     "TracingSettings",
     "load_tracing_settings",
     "build_azure_tracer",
