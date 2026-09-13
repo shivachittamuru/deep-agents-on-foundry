@@ -1,0 +1,1191 @@
+{
+  "schema_version": "1.0",
+  "synthetic": true,
+  "description": "Synthetic experiment history for testing trend analysis in the reusable agent improvement framework.",
+  "records": [
+    {
+      "timestamp": "2026-07-01T16:00:00Z",
+      "change_id": "prompt_search_stopping_v1-01",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-01",
+      "observed_failure": {
+        "failure_category": "tool_use",
+        "summary": "Repeated or unnecessary tool/search activity"
+      },
+      "hypothesis": "Reduce redundant searches without lowering quality",
+      "change_description": "Synthetic experiment for prompt search stopping v1",
+      "dataset": {
+        "split": "dev",
+        "cases": 6,
+        "primary_complexity": "simple"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.06,
+        "quality_delta": 0.06,
+        "baseline_success_rate": 0.72,
+        "candidate_success_rate": 0.73,
+        "input_output_token_delta_pct": -4.8,
+        "latency_delta_pct": -2.0,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 3.95,
+        "web_search_delta": -0.25,
+        "candidate_total_tokens_avg": 30464,
+        "candidate_latency_seconds_avg": 41.16
+      },
+      "regressions": [],
+      "decision": "KEEP",
+      "notes": "No material regression detected in the synthetic experiment.",
+      "tags": [
+        "tool_use",
+        "simple",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-07-03T16:00:00Z",
+      "change_id": "technology_skill_v2-02",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-02",
+      "observed_failure": {
+        "failure_category": "skill",
+        "summary": "Research procedure not consistently applied"
+      },
+      "hypothesis": "Improve architecture coverage with selective skill guidance",
+      "change_description": "Synthetic experiment for technology skill v2",
+      "dataset": {
+        "split": "dev",
+        "cases": 6,
+        "primary_complexity": "medium"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.11,
+        "quality_delta": 0.11,
+        "baseline_success_rate": 0.72,
+        "candidate_success_rate": 0.73,
+        "input_output_token_delta_pct": 0.7,
+        "latency_delta_pct": 4.6,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 3.84,
+        "web_search_delta": -0.36,
+        "candidate_total_tokens_avg": 32223,
+        "candidate_latency_seconds_avg": 43.93
+      },
+      "regressions": [],
+      "decision": "KEEP",
+      "notes": "No material regression detected in the synthetic experiment.",
+      "tags": [
+        "skill",
+        "medium",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-07-05T16:00:00Z",
+      "change_id": "memory_policy_v2-03",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-03",
+      "observed_failure": {
+        "failure_category": "memory",
+        "summary": "User preference handling needed refinement"
+      },
+      "hypothesis": "Improve preference recall while avoiding accidental memory writes",
+      "change_description": "Synthetic experiment for memory policy v2",
+      "dataset": {
+        "split": "dev",
+        "cases": 6,
+        "primary_complexity": "complex"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.01,
+        "quality_delta": 0.01,
+        "baseline_success_rate": 0.73,
+        "candidate_success_rate": 0.73,
+        "input_output_token_delta_pct": -5.4,
+        "latency_delta_pct": -3.0,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 4.09,
+        "web_search_delta": -0.11,
+        "candidate_total_tokens_avg": 30272,
+        "candidate_latency_seconds_avg": 40.74
+      },
+      "regressions": [],
+      "decision": "KEEP",
+      "notes": "No material regression detected in the synthetic experiment.",
+      "tags": [
+        "memory",
+        "complex",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-07-07T16:00:00Z",
+      "change_id": "source_policy_v1-04",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-04",
+      "observed_failure": {
+        "failure_category": "retrieval",
+        "summary": "Source quality or evidence coverage was inconsistent"
+      },
+      "hypothesis": "Increase primary-source usage and citation quality",
+      "change_description": "Synthetic experiment for source policy v1",
+      "dataset": {
+        "split": "held_out",
+        "cases": 3,
+        "primary_complexity": "simple"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 3.89,
+        "quality_delta": -0.11,
+        "baseline_success_rate": 0.73,
+        "candidate_success_rate": 0.72,
+        "input_output_token_delta_pct": -4.3,
+        "latency_delta_pct": 1.5,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 4.1,
+        "web_search_delta": -0.1,
+        "candidate_total_tokens_avg": 30624,
+        "candidate_latency_seconds_avg": 42.63
+      },
+      "regressions": [],
+      "decision": "KEEP",
+      "notes": "No material regression detected in the synthetic experiment.",
+      "tags": [
+        "retrieval",
+        "simple",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-07-09T16:00:00Z",
+      "change_id": "context_compaction_v1-05",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-05",
+      "observed_failure": {
+        "failure_category": "context",
+        "summary": "Repeated context increased cost or important facts were lost"
+      },
+      "hypothesis": "Reduce repeated context while preserving important facts",
+      "change_description": "Synthetic experiment for context compaction v1",
+      "dataset": {
+        "split": "dev",
+        "cases": 6,
+        "primary_complexity": "medium"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 3.75,
+        "quality_delta": -0.25,
+        "baseline_success_rate": 0.74,
+        "candidate_success_rate": 0.71,
+        "input_output_token_delta_pct": -6.4,
+        "latency_delta_pct": 3.1,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 3.73,
+        "web_search_delta": -0.47,
+        "candidate_total_tokens_avg": 29952,
+        "candidate_latency_seconds_avg": 43.3
+      },
+      "regressions": [
+        "Quality regression despite lower cost"
+      ],
+      "decision": "REVERT",
+      "notes": "Candidate became cheaper but crossed below the quality guardrail.",
+      "tags": [
+        "context",
+        "medium",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-07-11T16:00:00Z",
+      "change_id": "tool_routing_v2-06",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-06",
+      "observed_failure": {
+        "failure_category": "tool_use",
+        "summary": "Repeated or unnecessary tool/search activity"
+      },
+      "hypothesis": "Avoid unnecessary web-search calls on simple tasks",
+      "change_description": "Synthetic experiment for tool routing v2",
+      "dataset": {
+        "split": "dev",
+        "cases": 6,
+        "primary_complexity": "complex"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.02,
+        "quality_delta": 0.02,
+        "baseline_success_rate": 0.74,
+        "candidate_success_rate": 0.74,
+        "input_output_token_delta_pct": -5.4,
+        "latency_delta_pct": 4.5,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 3.93,
+        "web_search_delta": -0.27,
+        "candidate_total_tokens_avg": 30272,
+        "candidate_latency_seconds_avg": 43.89
+      },
+      "regressions": [],
+      "decision": "KEEP",
+      "notes": "No material regression detected in the synthetic experiment.",
+      "tags": [
+        "tool_use",
+        "complex",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-07-13T16:00:00Z",
+      "change_id": "architecture_skill_v1-07",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-07",
+      "observed_failure": {
+        "failure_category": "skill",
+        "summary": "Research procedure not consistently applied"
+      },
+      "hypothesis": "Improve trade-off and state-ownership analysis",
+      "change_description": "Synthetic experiment for architecture skill v1",
+      "dataset": {
+        "split": "dev",
+        "cases": 6,
+        "primary_complexity": "simple"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 3.95,
+        "quality_delta": -0.05,
+        "baseline_success_rate": 0.74,
+        "candidate_success_rate": 0.73,
+        "input_output_token_delta_pct": -6.2,
+        "latency_delta_pct": 3.1,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 4.08,
+        "web_search_delta": -0.12,
+        "candidate_total_tokens_avg": 30016,
+        "candidate_latency_seconds_avg": 43.3
+      },
+      "regressions": [],
+      "decision": "KEEP",
+      "notes": "No material regression detected in the synthetic experiment.",
+      "tags": [
+        "skill",
+        "simple",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-07-15T16:00:00Z",
+      "change_id": "subagent_trial_v1-08",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-08",
+      "observed_failure": {
+        "failure_category": "subagent",
+        "summary": "Delegation effectiveness was unclear"
+      },
+      "hypothesis": "Test whether specialist delegation helps complex research",
+      "change_description": "Synthetic experiment for subagent trial v1",
+      "dataset": {
+        "split": "held_out",
+        "cases": 3,
+        "primary_complexity": "medium"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.2,
+        "quality_delta": 0.2,
+        "baseline_success_rate": 0.75,
+        "candidate_success_rate": 0.77,
+        "input_output_token_delta_pct": -0.9,
+        "latency_delta_pct": -0.5,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 4.31,
+        "web_search_delta": 0.11,
+        "candidate_total_tokens_avg": 31712,
+        "candidate_latency_seconds_avg": 41.79
+      },
+      "regressions": [
+        "Mixed held-out behavior"
+      ],
+      "decision": "INVESTIGATE",
+      "notes": "DEV improved, but at least one held-out case regressed.",
+      "tags": [
+        "subagent",
+        "medium",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-07-17T16:00:00Z",
+      "change_id": "prompt_search_stopping_v1-09",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-09",
+      "observed_failure": {
+        "failure_category": "tool_use",
+        "summary": "Repeated or unnecessary tool/search activity"
+      },
+      "hypothesis": "Reduce redundant searches without lowering quality",
+      "change_description": "Synthetic experiment for prompt search stopping v1",
+      "dataset": {
+        "split": "dev",
+        "cases": 6,
+        "primary_complexity": "complex"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.07,
+        "quality_delta": 0.07,
+        "baseline_success_rate": 0.75,
+        "candidate_success_rate": 0.76,
+        "input_output_token_delta_pct": -2.8,
+        "latency_delta_pct": 2.5,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 4.06,
+        "web_search_delta": -0.14,
+        "candidate_total_tokens_avg": 31104,
+        "candidate_latency_seconds_avg": 43.05
+      },
+      "regressions": [],
+      "decision": "KEEP",
+      "notes": "No material regression detected in the synthetic experiment.",
+      "tags": [
+        "tool_use",
+        "complex",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-07-19T16:00:00Z",
+      "change_id": "technology_skill_v2-10",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-10",
+      "observed_failure": {
+        "failure_category": "skill",
+        "summary": "Research procedure not consistently applied"
+      },
+      "hypothesis": "Improve architecture coverage with selective skill guidance",
+      "change_description": "Synthetic experiment for technology skill v2",
+      "dataset": {
+        "split": "dev",
+        "cases": 6,
+        "primary_complexity": "simple"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.24,
+        "quality_delta": 0.24,
+        "baseline_success_rate": 0.76,
+        "candidate_success_rate": 0.78,
+        "input_output_token_delta_pct": -3.0,
+        "latency_delta_pct": 1.0,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 3.67,
+        "web_search_delta": -0.53,
+        "candidate_total_tokens_avg": 31040,
+        "candidate_latency_seconds_avg": 42.42
+      },
+      "regressions": [],
+      "decision": "KEEP",
+      "notes": "No material regression detected in the synthetic experiment.",
+      "tags": [
+        "skill",
+        "simple",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-07-21T16:00:00Z",
+      "change_id": "memory_policy_v2-11",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-11",
+      "observed_failure": {
+        "failure_category": "memory",
+        "summary": "User preference handling needed refinement"
+      },
+      "hypothesis": "Improve preference recall while avoiding accidental memory writes",
+      "change_description": "Synthetic experiment for memory policy v2",
+      "dataset": {
+        "split": "dev",
+        "cases": 6,
+        "primary_complexity": "medium"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.05,
+        "quality_delta": 0.05,
+        "baseline_success_rate": 0.76,
+        "candidate_success_rate": 0.77,
+        "input_output_token_delta_pct": -5.9,
+        "latency_delta_pct": -6.1,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 3.77,
+        "web_search_delta": -0.43,
+        "candidate_total_tokens_avg": 30112,
+        "candidate_latency_seconds_avg": 39.44
+      },
+      "regressions": [],
+      "decision": "KEEP",
+      "notes": "No material regression detected in the synthetic experiment.",
+      "tags": [
+        "memory",
+        "medium",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-07-23T16:00:00Z",
+      "change_id": "source_policy_v1-12",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-12",
+      "observed_failure": {
+        "failure_category": "retrieval",
+        "summary": "Source quality or evidence coverage was inconsistent"
+      },
+      "hypothesis": "Increase primary-source usage and citation quality",
+      "change_description": "Synthetic experiment for source policy v1",
+      "dataset": {
+        "split": "held_out",
+        "cases": 3,
+        "primary_complexity": "complex"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 3.64,
+        "quality_delta": -0.36,
+        "baseline_success_rate": 0.76,
+        "candidate_success_rate": 0.72,
+        "input_output_token_delta_pct": -10.3,
+        "latency_delta_pct": -0.2,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 3.84,
+        "web_search_delta": -0.36,
+        "candidate_total_tokens_avg": 28704,
+        "candidate_latency_seconds_avg": 41.92
+      },
+      "regressions": [
+        "Quality regression despite lower cost"
+      ],
+      "decision": "REVERT",
+      "notes": "Candidate became cheaper but crossed below the quality guardrail.",
+      "tags": [
+        "retrieval",
+        "complex",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-07-25T16:00:00Z",
+      "change_id": "context_compaction_v1-13",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-13",
+      "observed_failure": {
+        "failure_category": "context",
+        "summary": "Repeated context increased cost or important facts were lost"
+      },
+      "hypothesis": "Reduce repeated context while preserving important facts",
+      "change_description": "Synthetic experiment for context compaction v1",
+      "dataset": {
+        "split": "dev",
+        "cases": 6,
+        "primary_complexity": "simple"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.08,
+        "quality_delta": 0.08,
+        "baseline_success_rate": 0.77,
+        "candidate_success_rate": 0.78,
+        "input_output_token_delta_pct": -0.8,
+        "latency_delta_pct": -0.3,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 3.98,
+        "web_search_delta": -0.22,
+        "candidate_total_tokens_avg": 31744,
+        "candidate_latency_seconds_avg": 41.87
+      },
+      "regressions": [],
+      "decision": "KEEP",
+      "notes": "No material regression detected in the synthetic experiment.",
+      "tags": [
+        "context",
+        "simple",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-07-27T16:00:00Z",
+      "change_id": "tool_routing_v2-14",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-14",
+      "observed_failure": {
+        "failure_category": "tool_use",
+        "summary": "Repeated or unnecessary tool/search activity"
+      },
+      "hypothesis": "Avoid unnecessary web-search calls on simple tasks",
+      "change_description": "Synthetic experiment for tool routing v2",
+      "dataset": {
+        "split": "dev",
+        "cases": 6,
+        "primary_complexity": "medium"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.06,
+        "quality_delta": 0.06,
+        "baseline_success_rate": 0.77,
+        "candidate_success_rate": 0.78,
+        "input_output_token_delta_pct": -3.0,
+        "latency_delta_pct": -5.8,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 3.81,
+        "web_search_delta": -0.39,
+        "candidate_total_tokens_avg": 31040,
+        "candidate_latency_seconds_avg": 39.56
+      },
+      "regressions": [],
+      "decision": "KEEP",
+      "notes": "No material regression detected in the synthetic experiment.",
+      "tags": [
+        "tool_use",
+        "medium",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-07-29T16:00:00Z",
+      "change_id": "architecture_skill_v1-15",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-15",
+      "observed_failure": {
+        "failure_category": "skill",
+        "summary": "Research procedure not consistently applied"
+      },
+      "hypothesis": "Improve trade-off and state-ownership analysis",
+      "change_description": "Synthetic experiment for architecture skill v1",
+      "dataset": {
+        "split": "dev",
+        "cases": 6,
+        "primary_complexity": "complex"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.34,
+        "quality_delta": 0.34,
+        "baseline_success_rate": 0.78,
+        "candidate_success_rate": 0.81,
+        "input_output_token_delta_pct": -4.1,
+        "latency_delta_pct": -1.7,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 3.99,
+        "web_search_delta": -0.21,
+        "candidate_total_tokens_avg": 30688,
+        "candidate_latency_seconds_avg": 41.29
+      },
+      "regressions": [],
+      "decision": "KEEP",
+      "notes": "No material regression detected in the synthetic experiment.",
+      "tags": [
+        "skill",
+        "complex",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-07-31T16:00:00Z",
+      "change_id": "subagent_trial_v1-16",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-16",
+      "observed_failure": {
+        "failure_category": "subagent",
+        "summary": "Delegation effectiveness was unclear"
+      },
+      "hypothesis": "Test whether specialist delegation helps complex research",
+      "change_description": "Synthetic experiment for subagent trial v1",
+      "dataset": {
+        "split": "held_out",
+        "cases": 3,
+        "primary_complexity": "simple"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.31,
+        "quality_delta": 0.31,
+        "baseline_success_rate": 0.78,
+        "candidate_success_rate": 0.81,
+        "input_output_token_delta_pct": -3.3,
+        "latency_delta_pct": -5.5,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 3.55,
+        "web_search_delta": -0.65,
+        "candidate_total_tokens_avg": 30944,
+        "candidate_latency_seconds_avg": 39.69
+      },
+      "regressions": [
+        "Mixed held-out behavior"
+      ],
+      "decision": "INVESTIGATE",
+      "notes": "DEV improved, but at least one held-out case regressed.",
+      "tags": [
+        "subagent",
+        "simple",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-08-02T16:00:00Z",
+      "change_id": "prompt_search_stopping_v1-17",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-17",
+      "observed_failure": {
+        "failure_category": "tool_use",
+        "summary": "Repeated or unnecessary tool/search activity"
+      },
+      "hypothesis": "Reduce redundant searches without lowering quality",
+      "change_description": "Synthetic experiment for prompt search stopping v1",
+      "dataset": {
+        "split": "dev",
+        "cases": 6,
+        "primary_complexity": "medium"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.15,
+        "quality_delta": 0.15,
+        "baseline_success_rate": 0.78,
+        "candidate_success_rate": 0.8,
+        "input_output_token_delta_pct": -8.2,
+        "latency_delta_pct": -5.9,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 4.12,
+        "web_search_delta": -0.08,
+        "candidate_total_tokens_avg": 29376,
+        "candidate_latency_seconds_avg": 39.52
+      },
+      "regressions": [],
+      "decision": "KEEP",
+      "notes": "No material regression detected in the synthetic experiment.",
+      "tags": [
+        "tool_use",
+        "medium",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-08-04T16:00:00Z",
+      "change_id": "technology_skill_v2-18",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-18",
+      "observed_failure": {
+        "failure_category": "skill",
+        "summary": "Research procedure not consistently applied"
+      },
+      "hypothesis": "Improve architecture coverage with selective skill guidance",
+      "change_description": "Synthetic experiment for technology skill v2",
+      "dataset": {
+        "split": "dev",
+        "cases": 6,
+        "primary_complexity": "complex"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.34,
+        "quality_delta": 0.34,
+        "baseline_success_rate": 0.79,
+        "candidate_success_rate": 0.82,
+        "input_output_token_delta_pct": -8.1,
+        "latency_delta_pct": -1.2,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 3.75,
+        "web_search_delta": -0.45,
+        "candidate_total_tokens_avg": 29408,
+        "candidate_latency_seconds_avg": 41.5
+      },
+      "regressions": [],
+      "decision": "KEEP",
+      "notes": "No material regression detected in the synthetic experiment.",
+      "tags": [
+        "skill",
+        "complex",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-08-06T16:00:00Z",
+      "change_id": "memory_policy_v2-19",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-19",
+      "observed_failure": {
+        "failure_category": "memory",
+        "summary": "User preference handling needed refinement"
+      },
+      "hypothesis": "Improve preference recall while avoiding accidental memory writes",
+      "change_description": "Synthetic experiment for memory policy v2",
+      "dataset": {
+        "split": "dev",
+        "cases": 6,
+        "primary_complexity": "simple"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.37,
+        "quality_delta": 0.37,
+        "baseline_success_rate": 0.79,
+        "candidate_success_rate": 0.83,
+        "input_output_token_delta_pct": -7.2,
+        "latency_delta_pct": -5.7,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 3.64,
+        "web_search_delta": -0.56,
+        "candidate_total_tokens_avg": 29695,
+        "candidate_latency_seconds_avg": 39.61
+      },
+      "regressions": [],
+      "decision": "KEEP",
+      "notes": "No material regression detected in the synthetic experiment.",
+      "tags": [
+        "memory",
+        "simple",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-08-08T16:00:00Z",
+      "change_id": "source_policy_v1-20",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-20",
+      "observed_failure": {
+        "failure_category": "retrieval",
+        "summary": "Source quality or evidence coverage was inconsistent"
+      },
+      "hypothesis": "Increase primary-source usage and citation quality",
+      "change_description": "Synthetic experiment for source policy v1",
+      "dataset": {
+        "split": "held_out",
+        "cases": 3,
+        "primary_complexity": "medium"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 3.65,
+        "quality_delta": -0.35,
+        "baseline_success_rate": 0.8,
+        "candidate_success_rate": 0.77,
+        "input_output_token_delta_pct": -10.2,
+        "latency_delta_pct": -2.4,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 4.04,
+        "web_search_delta": -0.16,
+        "candidate_total_tokens_avg": 28736,
+        "candidate_latency_seconds_avg": 40.99
+      },
+      "regressions": [
+        "Quality regression despite lower cost"
+      ],
+      "decision": "REVERT",
+      "notes": "Candidate became cheaper but crossed below the quality guardrail.",
+      "tags": [
+        "retrieval",
+        "medium",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-08-10T16:00:00Z",
+      "change_id": "context_compaction_v1-21",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-21",
+      "observed_failure": {
+        "failure_category": "context",
+        "summary": "Repeated context increased cost or important facts were lost"
+      },
+      "hypothesis": "Reduce repeated context while preserving important facts",
+      "change_description": "Synthetic experiment for context compaction v1",
+      "dataset": {
+        "split": "dev",
+        "cases": 6,
+        "primary_complexity": "complex"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.42,
+        "quality_delta": 0.42,
+        "baseline_success_rate": 0.8,
+        "candidate_success_rate": 0.84,
+        "input_output_token_delta_pct": -7.4,
+        "latency_delta_pct": -8.0,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 3.47,
+        "web_search_delta": -0.73,
+        "candidate_total_tokens_avg": 29631,
+        "candidate_latency_seconds_avg": 38.64
+      },
+      "regressions": [],
+      "decision": "KEEP",
+      "notes": "No material regression detected in the synthetic experiment.",
+      "tags": [
+        "context",
+        "complex",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-08-12T16:00:00Z",
+      "change_id": "tool_routing_v2-22",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-22",
+      "observed_failure": {
+        "failure_category": "tool_use",
+        "summary": "Repeated or unnecessary tool/search activity"
+      },
+      "hypothesis": "Avoid unnecessary web-search calls on simple tasks",
+      "change_description": "Synthetic experiment for tool routing v2",
+      "dataset": {
+        "split": "dev",
+        "cases": 6,
+        "primary_complexity": "simple"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.14,
+        "quality_delta": 0.14,
+        "baseline_success_rate": 0.8,
+        "candidate_success_rate": 0.81,
+        "input_output_token_delta_pct": -6.7,
+        "latency_delta_pct": -0.5,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 3.7,
+        "web_search_delta": -0.5,
+        "candidate_total_tokens_avg": 29856,
+        "candidate_latency_seconds_avg": 41.79
+      },
+      "regressions": [],
+      "decision": "KEEP",
+      "notes": "No material regression detected in the synthetic experiment.",
+      "tags": [
+        "tool_use",
+        "simple",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-08-14T16:00:00Z",
+      "change_id": "architecture_skill_v1-23",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-23",
+      "observed_failure": {
+        "failure_category": "skill",
+        "summary": "Research procedure not consistently applied"
+      },
+      "hypothesis": "Improve trade-off and state-ownership analysis",
+      "change_description": "Synthetic experiment for architecture skill v1",
+      "dataset": {
+        "split": "dev",
+        "cases": 6,
+        "primary_complexity": "medium"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.13,
+        "quality_delta": 0.13,
+        "baseline_success_rate": 0.81,
+        "candidate_success_rate": 0.82,
+        "input_output_token_delta_pct": -9.3,
+        "latency_delta_pct": 1.6,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 3.75,
+        "web_search_delta": -0.45,
+        "candidate_total_tokens_avg": 29024,
+        "candidate_latency_seconds_avg": 42.67
+      },
+      "regressions": [],
+      "decision": "KEEP",
+      "notes": "No material regression detected in the synthetic experiment.",
+      "tags": [
+        "skill",
+        "medium",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-08-16T16:00:00Z",
+      "change_id": "subagent_trial_v1-24",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-24",
+      "observed_failure": {
+        "failure_category": "subagent",
+        "summary": "Delegation effectiveness was unclear"
+      },
+      "hypothesis": "Test whether specialist delegation helps complex research",
+      "change_description": "Synthetic experiment for subagent trial v1",
+      "dataset": {
+        "split": "held_out",
+        "cases": 3,
+        "primary_complexity": "complex"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.45,
+        "quality_delta": 0.45,
+        "baseline_success_rate": 0.81,
+        "candidate_success_rate": 0.86,
+        "input_output_token_delta_pct": -5.3,
+        "latency_delta_pct": -9.5,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 3.85,
+        "web_search_delta": -0.35,
+        "candidate_total_tokens_avg": 30304,
+        "candidate_latency_seconds_avg": 38.01
+      },
+      "regressions": [
+        "Mixed held-out behavior"
+      ],
+      "decision": "INVESTIGATE",
+      "notes": "DEV improved, but at least one held-out case regressed.",
+      "tags": [
+        "subagent",
+        "complex",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-08-18T16:00:00Z",
+      "change_id": "prompt_search_stopping_v1-25",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-25",
+      "observed_failure": {
+        "failure_category": "tool_use",
+        "summary": "Repeated or unnecessary tool/search activity"
+      },
+      "hypothesis": "Reduce redundant searches without lowering quality",
+      "change_description": "Synthetic experiment for prompt search stopping v1",
+      "dataset": {
+        "split": "dev",
+        "cases": 6,
+        "primary_complexity": "simple"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.36,
+        "quality_delta": 0.36,
+        "baseline_success_rate": 0.82,
+        "candidate_success_rate": 0.86,
+        "input_output_token_delta_pct": -8.6,
+        "latency_delta_pct": -6.9,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 3.78,
+        "web_search_delta": -0.42,
+        "candidate_total_tokens_avg": 29248,
+        "candidate_latency_seconds_avg": 39.1
+      },
+      "regressions": [],
+      "decision": "KEEP",
+      "notes": "No material regression detected in the synthetic experiment.",
+      "tags": [
+        "tool_use",
+        "simple",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-08-20T16:00:00Z",
+      "change_id": "technology_skill_v2-26",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-26",
+      "observed_failure": {
+        "failure_category": "skill",
+        "summary": "Research procedure not consistently applied"
+      },
+      "hypothesis": "Improve architecture coverage with selective skill guidance",
+      "change_description": "Synthetic experiment for technology skill v2",
+      "dataset": {
+        "split": "dev",
+        "cases": 6,
+        "primary_complexity": "medium"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.19,
+        "quality_delta": 0.19,
+        "baseline_success_rate": 0.82,
+        "candidate_success_rate": 0.84,
+        "input_output_token_delta_pct": -9.8,
+        "latency_delta_pct": -5.0,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 3.97,
+        "web_search_delta": -0.23,
+        "candidate_total_tokens_avg": 28864,
+        "candidate_latency_seconds_avg": 39.9
+      },
+      "regressions": [],
+      "decision": "KEEP",
+      "notes": "No material regression detected in the synthetic experiment.",
+      "tags": [
+        "skill",
+        "medium",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-08-22T16:00:00Z",
+      "change_id": "memory_policy_v2-27",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-27",
+      "observed_failure": {
+        "failure_category": "memory",
+        "summary": "User preference handling needed refinement"
+      },
+      "hypothesis": "Improve preference recall while avoiding accidental memory writes",
+      "change_description": "Synthetic experiment for memory policy v2",
+      "dataset": {
+        "split": "dev",
+        "cases": 6,
+        "primary_complexity": "complex"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.45,
+        "quality_delta": 0.45,
+        "baseline_success_rate": 0.82,
+        "candidate_success_rate": 0.86,
+        "input_output_token_delta_pct": -11.7,
+        "latency_delta_pct": -4.7,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 3.45,
+        "web_search_delta": -0.75,
+        "candidate_total_tokens_avg": 28256,
+        "candidate_latency_seconds_avg": 40.03
+      },
+      "regressions": [],
+      "decision": "KEEP",
+      "notes": "No material regression detected in the synthetic experiment.",
+      "tags": [
+        "memory",
+        "complex",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-08-24T16:00:00Z",
+      "change_id": "source_policy_v1-28",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-28",
+      "observed_failure": {
+        "failure_category": "retrieval",
+        "summary": "Source quality or evidence coverage was inconsistent"
+      },
+      "hypothesis": "Increase primary-source usage and citation quality",
+      "change_description": "Synthetic experiment for source policy v1",
+      "dataset": {
+        "split": "held_out",
+        "cases": 3,
+        "primary_complexity": "simple"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.48,
+        "quality_delta": 0.48,
+        "baseline_success_rate": 0.83,
+        "candidate_success_rate": 0.88,
+        "input_output_token_delta_pct": -6.6,
+        "latency_delta_pct": -7.1,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 3.73,
+        "web_search_delta": -0.47,
+        "candidate_total_tokens_avg": 29887,
+        "candidate_latency_seconds_avg": 39.02
+      },
+      "regressions": [
+        "Mixed held-out behavior"
+      ],
+      "decision": "INVESTIGATE",
+      "notes": "DEV improved, but at least one held-out case regressed.",
+      "tags": [
+        "retrieval",
+        "simple",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-08-26T16:00:00Z",
+      "change_id": "context_compaction_v1-29",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-29",
+      "observed_failure": {
+        "failure_category": "context",
+        "summary": "Repeated context increased cost or important facts were lost"
+      },
+      "hypothesis": "Reduce repeated context while preserving important facts",
+      "change_description": "Synthetic experiment for context compaction v1",
+      "dataset": {
+        "split": "dev",
+        "cases": 6,
+        "primary_complexity": "medium"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.39,
+        "quality_delta": 0.39,
+        "baseline_success_rate": 0.83,
+        "candidate_success_rate": 0.87,
+        "input_output_token_delta_pct": -13.4,
+        "latency_delta_pct": -2.2,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 3.65,
+        "web_search_delta": -0.55,
+        "candidate_total_tokens_avg": 27712,
+        "candidate_latency_seconds_avg": 41.08
+      },
+      "regressions": [],
+      "decision": "KEEP",
+      "notes": "No material regression detected in the synthetic experiment.",
+      "tags": [
+        "context",
+        "medium",
+        "synthetic"
+      ]
+    },
+    {
+      "timestamp": "2026-08-28T16:00:00Z",
+      "change_id": "tool_routing_v2-30",
+      "baseline_label": "research-agent-baseline",
+      "candidate_label": "candidate-30",
+      "observed_failure": {
+        "failure_category": "tool_use",
+        "summary": "Repeated or unnecessary tool/search activity"
+      },
+      "hypothesis": "Avoid unnecessary web-search calls on simple tasks",
+      "change_description": "Synthetic experiment for tool routing v2",
+      "dataset": {
+        "split": "dev",
+        "cases": 6,
+        "primary_complexity": "complex"
+      },
+      "summary": {
+        "baseline_quality": 4.0,
+        "candidate_quality": 4.45,
+        "quality_delta": 0.45,
+        "baseline_success_rate": 0.84,
+        "candidate_success_rate": 0.89,
+        "input_output_token_delta_pct": -10.4,
+        "latency_delta_pct": -10.8,
+        "baseline_avg_web_searches": 4.2,
+        "candidate_avg_web_searches": 3.49,
+        "web_search_delta": -0.71,
+        "candidate_total_tokens_avg": 28672,
+        "candidate_latency_seconds_avg": 37.46
+      },
+      "regressions": [],
+      "decision": "KEEP",
+      "notes": "No material regression detected in the synthetic experiment.",
+      "tags": [
+        "tool_use",
+        "complex",
+        "synthetic"
+      ]
+    }
+  ]
+}

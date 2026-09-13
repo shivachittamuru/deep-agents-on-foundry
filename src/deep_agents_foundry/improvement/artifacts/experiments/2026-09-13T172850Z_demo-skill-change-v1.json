@@ -1,0 +1,23 @@
+{
+  "change_id": "demo-skill-change-v1",
+  "baseline_label": "baseline",
+  "candidate_label": "candidate",
+  "decision": "KEEP",
+  "observed_failure": "Redundant web searches on simple questions",
+  "hypothesis": "The candidate improves quality while searching less",
+  "change_description": "Synthetic demo comparison using deterministic fake agents",
+  "quality_delta": 0.5999999999999996,
+  "deltas": {
+    "total_tokens": -600.0,
+    "latency_seconds": -3.5500270314514637e-06,
+    "web_searches": -1.0,
+    "model_calls": 0.0,
+    "tool_calls": 0.0,
+    "subagent_calls": 0.0
+  },
+  "regressions": [],
+  "evidence": "clear",
+  "recommendation_reason": "Overall rubric quality improved +0.60 with no critical regressions.",
+  "notes": "Notebook demonstration only; not a real experiment.",
+  "timestamp": "2026-09-13T17:28:50.665331+00:00"
+}

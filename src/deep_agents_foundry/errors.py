@@ -21,3 +21,7 @@ class ToolInitializationError(DeepAgentsFoundryError):
 
 class AgentInitializationError(DeepAgentsFoundryError):
     """Raised when the Deep Agent fails to construct."""
+
+
+class ExperimentLogError(DeepAgentsFoundryError):
+    """Raised when a persisted experiment record cannot be read or parsed."""
