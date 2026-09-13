@@ -25,3 +25,7 @@ class AgentInitializationError(DeepAgentsFoundryError):
 
 class ExperimentLogError(DeepAgentsFoundryError):
     """Raised when a persisted experiment record cannot be read or parsed."""
+
+
+class EconomicsLogError(DeepAgentsFoundryError):
+    """Raised when a persisted economics record cannot be read or parsed."""
