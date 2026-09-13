@@ -58,7 +58,10 @@ def test_save_creates_directory_and_file(tmp_path):
 
 
 def test_default_directory_constant_is_artifacts_economics():
-    assert DEFAULT_ECONOMICS_DIR.as_posix() == "artifacts/economics"
+    # Anchored to the repository-root artifacts/ directory, not the cwd.
+    assert DEFAULT_ECONOMICS_DIR.name == "economics"
+    assert DEFAULT_ECONOMICS_DIR.parent.name == "artifacts"
+    assert DEFAULT_ECONOMICS_DIR.is_absolute()
 
 
 # --------------------------------------------------------------------------- #

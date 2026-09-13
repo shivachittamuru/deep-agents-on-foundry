@@ -19,10 +19,11 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from ..paths import artifacts_dir
 from .models import EconomicsRun
 
 # Optional on-disk source; when absent the synthetic study is built instead.
-DEFAULT_RUNS_PATH = Path("artifacts/economics/economics_runs.json")
+DEFAULT_RUNS_PATH = artifacts_dir("economics", "economics_runs.json")
 
 # Per-group success patterns (four repetitions each).
 _ALL_OK = (True, True, True, True)

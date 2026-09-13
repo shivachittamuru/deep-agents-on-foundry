@@ -78,8 +78,10 @@ into `EconomicsRun` records without changing the `improvement` package.
 The package includes
 [`run_agent_economics.py`](run_agent_economics.py). It loads runs (or builds the
 built-in synthetic study when no run data is present), runs the full analysis,
-prints the report, and explicitly saves a compact JSON record under
-`artifacts/economics/`.
+prints the report, and explicitly saves a compact JSON record under the shared,
+repository-root `artifacts/economics/` directory. The location is anchored to the
+repository root, so results land in one common `artifacts/` folder regardless of
+the working directory.
 
 `load_or_build_runs()` reads
 `artifacts/economics/economics_runs.json` when it exists and otherwise returns
@@ -162,7 +164,9 @@ task complexity because the right architecture depends on task difficulty.
 ## Read saved economics history
 
 Saving is explicit and occurs after analysis and reporting. By default, one
-human-readable JSON file per analysis is written to `artifacts/economics/`.
+human-readable JSON file per analysis is written to the shared, repository-root
+`artifacts/economics/` directory, alongside `artifacts/experiments/` used by the
+improvement framework.
 
 List saved records:
 

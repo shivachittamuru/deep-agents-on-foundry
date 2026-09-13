@@ -25,10 +25,12 @@ from pathlib import Path
 from typing import Any
 
 from ..errors import EconomicsLogError
+from ..paths import artifacts_dir
 from .models import PREFER, ArchitectureSummary, EconomicsReport
 
-# Default on-disk location; created on demand when saving.
-DEFAULT_ECONOMICS_DIR = Path("artifacts/economics")
+# Default on-disk location; created on demand when saving. Anchored to the
+# repository-root ``artifacts/`` directory so history lives in one place.
+DEFAULT_ECONOMICS_DIR = artifacts_dir("economics")
 
 
 def _utc_now_iso() -> str:

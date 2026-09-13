@@ -18,10 +18,12 @@ from pathlib import Path
 from typing import Any
 
 from ..errors import ExperimentLogError
+from ..paths import artifacts_dir
 from .models import ComparisonReport
 
-# Default on-disk location; created on demand when saving.
-DEFAULT_EXPERIMENTS_DIR = Path("artifacts/experiments")
+# Default on-disk location; created on demand when saving. Anchored to the
+# repository-root ``artifacts/`` directory so history lives in one place.
+DEFAULT_EXPERIMENTS_DIR = artifacts_dir("experiments")
 
 # Aggregate metric deltas persisted as a compact summary. None stays None.
 _SUMMARY_METRIC_KEYS = (
