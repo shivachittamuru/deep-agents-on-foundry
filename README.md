@@ -1,5 +1,5 @@
 ---
-title: Deep Agents on Microsoft Foundry
+title: Hosted Deep Agents on Microsoft Foundry
 description: Production-oriented Deep Agent engineering harness on Microsoft Foundry
 ---
 
