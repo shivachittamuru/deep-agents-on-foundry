@@ -83,24 +83,46 @@ def _run_collect(agent, request, context):
     return asyncio.run(_go())
 
 
-def test_create_host_registers_handler_without_eager_agent_build(monkeypatch):
-    calls = {"checkpointer": 0, "agent": 0}
+class _FakePersistence:
+    """Fake PostgresPersistence recording open/close and exposing saver/store."""
+
+    def __init__(self):
+        self.opened = 0
+        self.closed = 0
+        self.checkpointer = "PG_CHECKPOINTER"
+        self.store = "PG_STORE"
+
+    async def open(self):
+        self.opened += 1
+
+    async def close(self):
+        self.closed += 1
+
+
+def test_create_host_registers_handlers_without_eager_build(monkeypatch):
+    built = {"agent": 0, "persistence": 0}
     registered = {}
 
     monkeypatch.setattr(
         hosting,
-        "build_async_sqlite_checkpointer",
-        lambda path: calls.__setitem__("checkpointer", calls["checkpointer"] + 1),
-    )
-    monkeypatch.setattr(
-        hosting,
         "build_research_agent",
-        lambda **kwargs: calls.__setitem__("agent", calls["agent"] + 1),
+        lambda **kwargs: built.__setitem__("agent", built["agent"] + 1),
     )
+
+    class _CountingPersistence(_FakePersistence):
+        def __init__(self):
+            super().__init__()
+            built["persistence"] += 1
+
+    monkeypatch.setattr(hosting, "PostgresPersistence", _CountingPersistence)
 
     class FakeHost:
         def response_handler(self, fn):
-            registered["fn"] = fn
+            registered["response"] = fn
+            return fn
+
+        def shutdown_handler(self, fn):
+            registered["shutdown"] = fn
             return fn
 
     monkeypatch.setattr(hosting, "ResponsesAgentServerHost", FakeHost)
@@ -108,28 +130,29 @@ def test_create_host_registers_handler_without_eager_agent_build(monkeypatch):
     app = hosting.create_host()
 
     assert isinstance(app, FakeHost)
-    assert "fn" in registered
-    # The agent/checkpointer are built lazily (need an event loop), not eagerly.
-    assert calls == {"checkpointer": 0, "agent": 0}
+    assert "response" in registered
+    assert "shutdown" in registered
+    # Nothing is built eagerly (persistence needs a running event loop).
+    assert built == {"agent": 0, "persistence": 0}
 
 
-def test_get_agent_builds_once(monkeypatch):
+def test_get_agent_builds_persistence_and_agent_once(monkeypatch):
     monkeypatch.setattr(hosting, "_agent_singleton", None)
-    calls = {"checkpointer": 0, "agent": 0}
+    monkeypatch.setattr(hosting, "_persistence", None)
+    instances = []
+
+    def make_persistence():
+        persistence = _FakePersistence()
+        instances.append(persistence)
+        return persistence
+
     captured = {}
 
-    def fake_checkpointer(path):
-        calls["checkpointer"] += 1
-        return "CHECKPOINTER"
-
     def fake_build_agent(*, checkpointer=None, store=None, skills=None):
-        calls["agent"] += 1
-        captured["checkpointer"] = checkpointer
-        captured["store"] = store
-        captured["skills"] = skills
+        captured.update(checkpointer=checkpointer, store=store, skills=skills)
         return "AGENT"
 
-    monkeypatch.setattr(hosting, "build_async_sqlite_checkpointer", fake_checkpointer)
+    monkeypatch.setattr(hosting, "PostgresPersistence", make_persistence)
     monkeypatch.setattr(hosting, "build_research_agent", fake_build_agent)
 
     async def run():
@@ -139,12 +162,25 @@ def test_get_agent_builds_once(monkeypatch):
 
     assert first == "AGENT"
     assert second == "AGENT"
-    # Built exactly once across multiple requests; persistent, with the checkpointer.
-    assert calls == {"checkpointer": 1, "agent": 1}
-    assert captured["checkpointer"] == "CHECKPOINTER"
-    # Store (long-term memory) and Skills are wired into the hosted agent.
-    assert isinstance(captured["store"], hosting.InMemoryStore)
+    # Persistence built and opened exactly once across requests.
+    assert len(instances) == 1
+    assert instances[0].opened == 1
+    # AsyncPostgresSaver + AsyncPostgresStore + Skills wired into the agent.
+    assert captured["checkpointer"] == "PG_CHECKPOINTER"
+    assert captured["store"] == "PG_STORE"
     assert captured["skills"] == hosting.DEFAULT_SKILL_SOURCES
+
+
+def test_close_persistence_closes_pool_and_resets(monkeypatch):
+    persistence = _FakePersistence()
+    monkeypatch.setattr(hosting, "_persistence", persistence)
+    monkeypatch.setattr(hosting, "_agent_singleton", "AGENT")
+
+    asyncio.run(hosting._close_persistence())
+
+    assert persistence.closed == 1
+    assert hosting._persistence is None
+    assert hosting._agent_singleton is None
 
 
 def test_resolve_thread_id_from_metadata():

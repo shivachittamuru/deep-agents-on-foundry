@@ -3,13 +3,21 @@
 from __future__ import annotations
 
 from .agent import RESEARCH_INSTRUCTIONS, build_research_agent
-from .config import Settings, TracingSettings, load_settings, load_tracing_settings
+from .config import (
+    PostgresSettings,
+    Settings,
+    TracingSettings,
+    load_postgres_settings,
+    load_settings,
+    load_tracing_settings,
+)
 from .content import content_text
 from .errors import (
     AgentInitializationError,
     ConfigurationError,
     DeepAgentsFoundryError,
     ModelInitializationError,
+    PersistenceError,
     ToolInitializationError,
 )
 from .evaluation import (
@@ -31,6 +39,7 @@ from .memory import (
     remember_research_preference,
 )
 from .persistence import (
+    PostgresPersistence,
     build_async_sqlite_checkpointer,
     build_sqlite_checkpointer,
     thread_config,
@@ -61,6 +70,9 @@ __all__ = [
     "build_sqlite_checkpointer",
     "build_async_sqlite_checkpointer",
     "thread_config",
+    "PostgresSettings",
+    "load_postgres_settings",
+    "PostgresPersistence",
     "ResearchContext",
     "preferences_namespace",
     "remember_research_preference",
@@ -87,4 +99,5 @@ __all__ = [
     "ModelInitializationError",
     "ToolInitializationError",
     "AgentInitializationError",
+    "PersistenceError",
 ]

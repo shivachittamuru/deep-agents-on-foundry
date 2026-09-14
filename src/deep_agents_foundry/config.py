@@ -14,6 +14,12 @@ MODEL_DEPLOYMENT_ENV = "AZURE_AI_MODEL_DEPLOYMENT_NAME"
 APP_INSIGHTS_CONNECTION_STRING_ENV = "APPLICATIONINSIGHTS_CONNECTION_STRING"
 ENABLE_TRACE_CONTENT_RECORDING_ENV = "ENABLE_TRACE_CONTENT_RECORDING"
 
+POSTGRES_HOST_ENV = "POSTGRES_HOST"
+POSTGRES_DATABASE_ENV = "POSTGRES_DATABASE"
+POSTGRES_USER_ENV = "POSTGRES_USER"
+POSTGRES_SSLMODE_ENV = "POSTGRES_SSLMODE"
+_DEFAULT_SSLMODE = "require"
+
 _TRUE_VALUES = {"1", "true", "yes", "on"}
 _FALSE_VALUES = {"0", "false", "no", "off"}
 
@@ -32,6 +38,16 @@ class TracingSettings:
 
     connection_string: str
     enable_content_recording: bool
+
+
+@dataclass(frozen=True)
+class PostgresSettings:
+    """PostgreSQL connection settings (no password — Entra auth is used)."""
+
+    host: str
+    database: str
+    user: str
+    sslmode: str
 
 
 def load_settings(*, use_dotenv: bool = True) -> Settings:
@@ -107,4 +123,40 @@ def load_tracing_settings(*, use_dotenv: bool = True) -> TracingSettings:
     return TracingSettings(
         connection_string=connection_string,
         enable_content_recording=enable_content_recording,
+    )
+
+
+def load_postgres_settings(*, use_dotenv: bool = True) -> PostgresSettings:
+    """Read and validate PostgreSQL settings (host/database/user/sslmode).
+
+    No password is read: authentication uses Entra ID tokens obtained at runtime.
+    `sslmode` defaults to ``require``.
+    """
+    if use_dotenv:
+        load_dotenv()
+
+    host = os.environ.get(POSTGRES_HOST_ENV, "").strip()
+    database = os.environ.get(POSTGRES_DATABASE_ENV, "").strip()
+    user = os.environ.get(POSTGRES_USER_ENV, "").strip()
+    sslmode = os.environ.get(POSTGRES_SSLMODE_ENV, "").strip() or _DEFAULT_SSLMODE
+
+    missing = [
+        name
+        for name, value in (
+            (POSTGRES_HOST_ENV, host),
+            (POSTGRES_DATABASE_ENV, database),
+            (POSTGRES_USER_ENV, user),
+        )
+        if not value
+    ]
+    if missing:
+        raise ConfigurationError(
+            "Missing required environment variables: " + ", ".join(missing)
+        )
+
+    return PostgresSettings(
+        host=host,
+        database=database,
+        user=user,
+        sslmode=sslmode,
     )

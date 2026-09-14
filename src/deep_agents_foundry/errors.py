@@ -23,6 +23,10 @@ class AgentInitializationError(DeepAgentsFoundryError):
     """Raised when the Deep Agent fails to construct."""
 
 
+class PersistenceError(DeepAgentsFoundryError):
+    """Raised when persistence (pool/auth/schema setup) fails to initialize."""
+
+
 class ExperimentLogError(DeepAgentsFoundryError):
     """Raised when a persisted experiment record cannot be read or parsed."""
 

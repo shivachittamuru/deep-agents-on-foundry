@@ -1,17 +1,17 @@
-"""Foundry Hosted Agent handler backed by one persistent Deep Agent (SQLite).
+"""Foundry Hosted Agent handler backed by one persistent Deep Agent (PostgreSQL).
 
 Durability lives in LangGraph checkpoints keyed by an application-level
 `thread_id`. Foundry `session_id`/conversation identity is intentionally NOT used
 as the permanent thread id, and Responses conversation history is never hydrated
 into LangGraph (`context.get_history()` is deliberately not called).
 
-SQLite is development-only persistence for this learning project.
+Persistence is Azure Database for PostgreSQL (Entra-authenticated): an
+`AsyncPostgresSaver` for thread/checkpoint state and an `AsyncPostgresStore` for
+long-term user memory, both backed by one process-wide connection pool.
 """
 
 import asyncio
 import os
-import tempfile
-from pathlib import Path
 
 from azure.ai.agentserver.responses import (
     CreateResponse,
@@ -19,11 +19,10 @@ from azure.ai.agentserver.responses import (
     ResponsesAgentServerHost,
     TextResponse,
 )
-from langgraph.store.memory import InMemoryStore
 
 from .agent import build_research_agent
 from .memory import ResearchContext
-from .persistence import build_async_sqlite_checkpointer, thread_config
+from .persistence import PostgresPersistence, thread_config
 from .skills import DEFAULT_SKILL_SOURCES, skills_available
 from .streaming import astream_research_text
 
@@ -43,17 +42,6 @@ DEFAULT_THREAD_ID = "default"
 DEFAULT_USER_ID_ENV = "DEEP_AGENTS_DEFAULT_USER_ID"
 DEFAULT_USER_ID = "user_id_1_shiva"
 
-# Env var pointing at the dev SQLite database (created once per process).
-SQLITE_PATH_ENV = "DEEP_AGENTS_SQLITE_PATH"
-
-# Default under the OS temp dir: the hosted container's app directory is
-# read-only, so a relative path there fails with "readonly database". Temp
-# storage is ephemeral (threads reset on restart); set DEEP_AGENTS_SQLITE_PATH to
-# a writable persistent volume to keep threads across restarts.
-DEFAULT_SQLITE_PATH = str(
-    Path(tempfile.gettempdir()) / "deep_agents_foundry" / "hosted_agent.db"
-)
-
 _APPROVAL_REQUIRED_MESSAGE = (
     "This action requires approval before it can continue. The run has been "
     "paused and its state saved under this thread; it can be resumed once "
@@ -63,12 +51,9 @@ _APPROVAL_REQUIRED_MESSAGE = (
 _EMPTY_INPUT_MESSAGE = "Please provide a research question."
 
 
-def _sqlite_path() -> str:
-    return os.environ.get(SQLITE_PATH_ENV, DEFAULT_SQLITE_PATH)
-
-
-# Built lazily on first request: AsyncSqliteSaver binds to the running event loop
-# at construction, which is not available when create_host() runs.
+# Built lazily on first request: the async Postgres pool and AsyncPostgresSaver
+# bind to the running event loop, which is not available when create_host() runs.
+_persistence = None
 _agent_singleton = None
 _agent_lock = asyncio.Lock()
 
@@ -76,24 +61,33 @@ _agent_lock = asyncio.Lock()
 async def _get_agent():
     """Return the process-wide persistent Deep Agent, building it once.
 
-    Wires the checkpointer (per-thread conversation state), a Store (long-term
-    user memory), and Skills (procedural knowledge). The Store is an
-    `InMemoryStore` for this hosted smoke test only — it is NOT durable
-    production memory and resets on process restart (Postgres comes later).
+    Initializes PostgreSQL persistence once per process (pool + schema setup),
+    then wires the AsyncPostgresSaver (per-thread conversation state), the
+    AsyncPostgresStore (long-term user memory), and Skills (procedural knowledge).
     """
-    global _agent_singleton
+    global _persistence, _agent_singleton
     if _agent_singleton is None:
         async with _agent_lock:
             if _agent_singleton is None:
-                checkpointer = build_async_sqlite_checkpointer(Path(_sqlite_path()))
-                store = InMemoryStore()  # non-durable hosted smoke-test memory
+                persistence = PostgresPersistence()
+                await persistence.open()  # pool + Saver/Store + schema setup once
                 skills = DEFAULT_SKILL_SOURCES if skills_available() else None
                 _agent_singleton = build_research_agent(
-                    checkpointer=checkpointer,
-                    store=store,
+                    checkpointer=persistence.checkpointer,
+                    store=persistence.store,
                     skills=skills,
                 )
+                _persistence = persistence
     return _agent_singleton
+
+
+async def _close_persistence() -> None:
+    """Close the PostgreSQL pool on shutdown."""
+    global _persistence, _agent_singleton
+    persistence, _persistence = _persistence, None
+    _agent_singleton = None
+    if persistence is not None:
+        await persistence.close()
 
 
 def _resolve_thread_id(request: CreateResponse, context: ResponseContext) -> str:
@@ -172,7 +166,7 @@ async def _handle_response(
 
 
 def create_host() -> ResponsesAgentServerHost:
-    """Build the Hosted Agent host; the Deep Agent is built lazily per process."""
+    """Build the Hosted Agent host; persistence + agent are built lazily per process."""
     app = ResponsesAgentServerHost()
 
     @app.response_handler
@@ -183,5 +177,9 @@ def create_host() -> ResponsesAgentServerHost:
     ):
         agent = await _get_agent()
         return await _handle_response(agent, request, context)
+
+    @app.shutdown_handler
+    async def _shutdown():
+        await _close_persistence()
 
     return app
